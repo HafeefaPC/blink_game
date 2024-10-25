@@ -1,6 +1,6 @@
 // src/app/game/page.jsx
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { db } from '../../lib/firebase';
 import { collection, query, where, onSnapshot, updateDoc, doc } from 'firebase/firestore';
@@ -93,45 +93,47 @@ export default function Game() {
     const isPlayer2 = playerName === gameState.players[1];
 
     return (
-        <div className="min-h-screen bg-black text-white font-mono flex flex-col items-center justify-center p-4">
-            <h1 className="text-4xl font-bold mb-8">Blink Challenge</h1>
-            {gameState.players.length === 2 && (
-                <div className="flex space-x-4 mb-8">
-                    <VideoCall isLocalUser={isPlayer1} />
-                    <VideoCall isLocalUser={isPlayer2} />
-                </div>
-            )}
-            {!gameState.gameStarted && gameState.players.length === 2 && (
-                <button
-                    onClick={startGame}
-                    className="py-3 px-4 bg-white text-black font-bold hover:bg-gray-200 transition-colors"
-                >
-                    Start Game
-                </button>
-            )}
-            {gameState.gameStarted && !gameState.winner && (
-                <div className="text-2xl mb-4">Game in progress... Don&apos;t blink! </div>
-            )}
-            {gameState.gameStarted && (
-                <div className="flex space-x-8 mb-4">
-                    <div>
-                        <p>{gameState.players[0]}: {gameState.player1Tries} tries left</p>
-                        {isPlayer1 && <BlinkDetector onBlink={() => handleBlink(1)} />}
+        <Suspense fallback={<div>Loading...</div>}>
+            <div className="min-h-screen bg-black text-white font-mono flex flex-col items-center justify-center p-4">
+                <h1 className="text-4xl font-bold mb-8">Blink Challenge</h1>
+                {gameState.players.length === 2 && (
+                    <div className="flex space-x-4 mb-8">
+                        <VideoCall isLocalUser={isPlayer1} />
+                        <VideoCall isLocalUser={isPlayer2} />
                     </div>
-                    <div>
-                        <p>{gameState.players[1]}: {gameState.player2Tries} tries left</p>
-                        {isPlayer2 && <BlinkDetector onBlink={() => handleBlink(2)} />}
+                )}
+                {!gameState.gameStarted && gameState.players.length === 2 && (
+                    <button
+                        onClick={startGame}
+                        className="py-3 px-4 bg-white text-black font-bold hover:bg-gray-200 transition-colors"
+                    >
+                        Start Game
+                    </button>
+                )}
+                {gameState.gameStarted && !gameState.winner && (
+                    <div className="text-2xl mb-4">Game in progress... Don&apos;t blink! </div>
+                )}
+                {gameState.gameStarted && (
+                    <div className="flex space-x-8 mb-4">
+                        <div>
+                            <p>{gameState.players[0]}: {gameState.player1Tries} tries left</p>
+                            {isPlayer1 && <BlinkDetector onBlink={() => handleBlink(1)} />}
+                        </div>
+                        <div>
+                            <p>{gameState.players[1]}: {gameState.player2Tries} tries left</p>
+                            {isPlayer2 && <BlinkDetector onBlink={() => handleBlink(2)} />}
+                        </div>
                     </div>
-                </div>
-            )}
-            {gameState.winner && (
-                <div className="text-2xl">
-                    {gameState.winner} wins!
-                    <br />
-                    Time: {((gameState.endTime - gameState.startTime) / 1000).toFixed(2)} seconds
-                </div>
-            )}
-            {showConfetti && <Confetti />}
-        </div>
+                )}
+                {gameState.winner && (
+                    <div className="text-2xl">
+                        {gameState.winner} wins!
+                        <br />
+                        Time: {((gameState.endTime - gameState.startTime) / 1000).toFixed(2)} seconds
+                    </div>
+                )}
+                {showConfetti && <Confetti />}
+            </div>
+        </Suspense>
     );
 }
