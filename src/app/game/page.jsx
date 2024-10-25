@@ -110,9 +110,9 @@ export default function Game() {
             Start Game
           </button>
         )}
-        {gameState.gameStarted && !gameState.winner && (
-          <div className="text-2xl mb-4">Game in progress... Don&apos;t blink!</div>
-        )}
+       {gameState.gameStarted && !gameState.winner && (
+  <div className="text-2xl mb-4">Game in progress... Don&apos;t blink!</div>
+)}
         {gameState.gameStarted && (
           <div className="flex space-x-8 mb-4">
             <div>
