@@ -1,6 +1,6 @@
 // src/app/game/page.jsx
 'use client';
-import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { db } from '../../lib/firebase';
 import { collection, query, where, onSnapshot, updateDoc, doc } from 'firebase/firestore';
