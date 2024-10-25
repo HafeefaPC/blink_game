@@ -3,21 +3,30 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function JoinTeam() {
-  const [teamId, setTeamId] = useState('');
+  const [teamName, setTeamName] = useState('');
+  const [playerName, setPlayerName] = useState('');
+  const [tries, setTries] = useState(3);
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('/api/join-team', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ teamId }),
-    });
-    const data = await response.json();
-    if (data.success) {
-      router.push(`/game?teamId=${teamId}`);
-    } else {
-      alert('Failed to join team. Please check the team ID.');
+    setError('');
+    try {
+      const response = await fetch('/api/join-team', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teamName, playerName, tries }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        router.push(`/game?teamName=${encodeURIComponent(teamName)}&playerName=${encodeURIComponent(playerName)}`);
+      } else {
+        setError(data.error || 'Failed to join team. Please check the team name.');
+      }
+    } catch (error) {
+      console.error('Error joining team:', error);
+      setError('An unexpected error occurred. Please try again.');
     }
   };
 
@@ -26,16 +35,28 @@ export default function JoinTeam() {
       <h1 className="text-4xl font-bold mb-8">Join a Team</h1>
       <form onSubmit={handleSubmit} className="w-full max-w-md">
         <div className="mb-4">
-          <label htmlFor="teamId" className="block mb-2">Team ID:</label>
+          <label htmlFor="playerName" className="block mb-2">Your Name:</label>
           <input
             type="text"
-            id="teamId"
-            value={teamId}
-            onChange={(e) => setTeamId(e.target.value)}
+            id="playerName"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
             className="w-full p-2 text-black"
             required
           />
         </div>
+        <div className="mb-4">
+          <label htmlFor="teamName" className="block mb-2">Team Name:</label>
+          <input
+            type="text"
+            id="teamName"
+            value={teamName}
+            onChange={(e) => setTeamName(e.target.value)}
+            className="w-full p-2 text-black"
+            required
+          />
+        </div>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <button type="submit" className="w-full py-3 px-4 bg-white text-black font-bold hover:bg-gray-200 transition-colors">
           Join Team
         </button>

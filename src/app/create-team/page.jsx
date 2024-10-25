@@ -4,7 +4,8 @@ import { useRouter } from 'next/navigation';
 
 export default function CreateTeam() {
     const [teamName, setTeamName] = useState('');
-    const [rounds, setRounds] = useState(1);
+    const [playerName, setPlayerName] = useState('');
+    const [tries, setTries] = useState(3);
     const router = useRouter();
 
     const handleSubmit = async (e) => {
@@ -12,10 +13,10 @@ export default function CreateTeam() {
         const response = await fetch('/api/create-team', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ teamName, rounds }),
+            body: JSON.stringify({ teamName, playerName, tries }),
         });
         const data = await response.json();
-        router.push(`/game?teamId=${data.teamId}`);
+        router.push(`/game?teamId=${data.teamId}&playerName=${encodeURIComponent(playerName)}`);
     };
 
     return (
@@ -34,17 +35,27 @@ export default function CreateTeam() {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="rounds" className="block mb-2">Number of Rounds:</label>
+                    <label htmlFor="playerName" className="block mb-2">Player Name:</label>
+                    <input
+                        type="text"
+                        id="playerName"
+                        value={playerName}
+                        onChange={(e) => setPlayerName(e.target.value)}
+                        className="w-full p-2 text-black"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="tries" className="block mb-2">Number of Tries:</label>
                     <input
                         type="number"
-                        id="rounds"
-                        value={rounds}
-                        onChange={(e) => setRounds(parseInt(e.target.value) || 1)}
+                        id="tries"
+                        value={tries}
+                        onChange={(e) => setTries(parseInt(e.target.value) || 3)}
                         className="w-full p-2 text-black"
                         min="1"
                         required
                     />
-
                 </div>
                 <button type="submit" className="w-full py-3 px-4 bg-white text-black font-bold hover:bg-gray-200 transition-colors">
                     Create Team
