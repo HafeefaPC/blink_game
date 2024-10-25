@@ -39,8 +39,9 @@ export default function BlinkDetector({ onBlink }) {
     setupBlinkDetection();
 
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+      const currentVideoRef = videoRef.current; // Store the current ref in a variable
+      if (currentVideoRef && currentVideoRef.srcObject) {
+        currentVideoRef.srcObject.getTracks().forEach(track => track.stop());
       }
     };
   }, []);
