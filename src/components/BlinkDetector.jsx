@@ -1,7 +1,9 @@
 'use client';
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-const EAR_THRESHOLD = 0.27; // This can be adjusted based on your testing
+const IMG_SIZE = { width: 64, height: 56 };
+const B_SIZE = { width: 34, height: 26 };
+const EAR_THRESHOLD = 0.27; // Adjust based on your testing
 
 export default function BlinkDetector({ onBlink }) {
   const videoRef = useRef(null);
@@ -20,7 +22,7 @@ export default function BlinkDetector({ onBlink }) {
     async function loadOpenCV() {
       await new Promise((resolve) => {
         const script = document.createElement('script');
-        script.src = 'https://docs.opencv.org/4.5.2/opencv.js';
+        script.src = 'https://docs.opencv.org/latest/opencv.js'; // Use latest version
         script.onload = resolve;
         document.head.appendChild(script);
       });
@@ -28,6 +30,12 @@ export default function BlinkDetector({ onBlink }) {
 
     async function setupBlinkDetection() {
       await loadOpenCV();
+      
+      if (typeof cv === 'undefined') {
+        console.error('OpenCV failed to load.');
+        return;
+      }
+
       const faceCascade = new cv.CascadeClassifier();
       faceCascade.load(cv.HAAR_FRONTALFACE_DEFAULT); // Load the face cascade
       const eyeCascade = new cv.CascadeClassifier();
@@ -46,8 +54,8 @@ export default function BlinkDetector({ onBlink }) {
     };
   }, []);
 
-  const detectBlink = useCallback(() => {
-    if (!model || !videoRef.current) return false;
+  const detectGazeAndBlink = useCallback(() => {
+    if (!model || !videoRef.current) return;
 
     const { faceCascade, eyeCascade } = model;
     const src = new cv.Mat(videoRef.current.height, videoRef.current.width, cv.CV_8UC4);
@@ -81,15 +89,16 @@ export default function BlinkDetector({ onBlink }) {
         const eye = eyes.get(j);
         cv.rectangle(roiSrc, new cv.Point(eye.x, eye.y), new cv.Point(eye.x + eye.width, eye.y + eye.height), [255, 0, 0, 255], 2);
       }
+
+      roiGray.delete();
+      roiSrc.delete();
+      eyes.delete();
     }
 
     // Clean up
     src.delete();
     gray.delete();
     faces.delete();
-    roiGray.delete();
-    roiSrc.delete();
-    eyes.delete();
 
     return blinkDetected;
   }, [model]);
@@ -100,7 +109,7 @@ export default function BlinkDetector({ onBlink }) {
     async function checkForBlink() {
       if (!isDetecting && model) {
         setIsDetecting(true);
-        const blinkDetected = detectBlink();
+        const blinkDetected = detectGazeAndBlink();
         if (blinkDetected) {
           onBlink();
         }
@@ -113,7 +122,7 @@ export default function BlinkDetector({ onBlink }) {
     return () => {
       clearInterval(intervalId);
     };
-  }, [onBlink, isDetecting, model, detectBlink]);
+  }, [onBlink, isDetecting, model, detectGazeAndBlink]);
 
   return (
     <>
@@ -122,3 +131,39 @@ export default function BlinkDetector({ onBlink }) {
     </>
   );
 }
+
+// Export setupBlinkDetection function
+export function setupBlinkDetection() {
+  return new Promise(async (resolve) => {
+    await loadOpenCV();
+    
+    if (typeof cv === 'undefined') {
+      console.error('OpenCV failed to load.');
+      resolve(null);
+      return;
+    }
+
+    const faceCascade = new cv.CascadeClassifier();
+    faceCascade.load(cv.HAAR_FRONTALFACE_DEFAULT);
+    const eyeCascade = new cv.CascadeClassifier();
+    eyeCascade.load(cv.HAAR_EYE);
+    resolve({ faceCascade, eyeCascade });
+  });
+}
+
+async function loadOpenCV() {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      // Use a specific version of OpenCV.js
+      script.src = 'https://cdn.jsdelivr.net/npm/opencv@7.0.0'; // Change to a valid version
+      script.onload = () => {
+        console.log('OpenCV.js is loaded');
+        resolve();
+      };
+      script.onerror = () => {
+        console.error('Failed to load OpenCV.js');
+        resolve(); // Resolve even if loading fails to avoid blocking
+      };
+      document.head.appendChild(script);
+    });
+  }
