@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Blink Game 🎯
 
-## Getting Started
+## Basic Details
+**Team Name:** Hafeefa PC Team
 
-First, run the development server:
+### Team Members
+- **Team Lead:** Hafeefa - CUSAT
 
+
+## Project Description
+The Blink Game is an interactive challenge where participants try to keep their eyes open as long as possible while staring at their opponent. The game tracks the time until the first blink, promoting fun and friendly competition.
+
+## The Problem (that doesn't exist)
+What if staring contests could be more exciting? Introducing the Blink Game: because why let a simple stare-off be boring when you can make it a thrilling digital showdown!
+
+## The Solution (that nobody asked for)
+With the Blink Game, players can create teams, set a number of tries, and engage in blink battles. Participants enter their names and team names, and when the game starts, it tracks how long they can keep their eyes open without blinking. The longer they last, the more glory they achieve, complete with virtual confetti when they win!
+
+## Technical Details
+### Technologies/Components Used
+#### For Software:
+- **Languages Used:** JavaScript, HTML, CSS
+- **Frameworks Used:** Nextjs.js, Firebase
+- **Libraries Used:** Zego UI Kit, React Router
+- **Tools Used:** Visual Studio Code, Firebase Console
+
+#### For Hardware:
+- **Main Components:** Webcam (for blink detection)
+- **Specifications:** Any standard webcam with a minimum resolution of 720p
+- **Tools Required:** Web browser for running the game
+
+## Implementation
+### For Software:
+#### Installation
 ```bash
+# Clone the repository
+git clone https://github.com/yourusername/blinkgame.git
+
+# Navigate into the project directory
+cd blinkgame
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Project Documentation
+For Software:
