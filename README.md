@@ -29,6 +29,55 @@ With the Blink Game, players can create teams, set a number of tries, and engage
 - **Specifications:** Any standard webcam with a minimum resolution of 720p
 - **Tools Required:** Web browser for running the game
 
+
+
+Project Documentation
+For Software:
+
+# Blink Game Screenshots
+
+### Screenshots
+![Screenshot 1](assets/Screenshot%202024-10-26%20073231.png)  
+*This screenshot shows the initial game setup interface.*
+
+![Screenshot 2](assets/Screenshot%202024-10-26%20073305.png)  
+*This screenshot displays players entering their names before the game starts.*
+
+![Screenshot 3](assets/Screenshot%202024-10-26%20073509.png)  
+*This screenshot captures the live game interface where the blinking challenge takes place.*
+
+### Diagrams
+![Workflow](assets/Screenshot%202024-10-26%20081410.png)  
+*This diagram illustrates the workflow of the Blink Game, detailing the user interactions and game flow.*
+
+## For Hardware:
+### Schematic & Circuit
+![Circuit](assets/Screenshot%202024-10-26%20081224.png)  
+*This schematic diagram shows the connections for the blink detection system.*
+
+### Build Photos
+![Components](assets/Screenshot%202024-10-26%20073537.png)  
+*This photo lists all components used in the blink detection system.*
+
+![Build](assets/Screenshot%202024-10-26%2007623.png)  
+*This image shows the build process of the project, highlighting key steps.*
+
+![Final](assets/Screenshot%202024-10-26%20073537.png)  
+*This photo depicts the final build of the Blink Game setup.*
+
+## Project Demo
+### Video
+[Watch the demo video here](assets/Recording%202024-10-26%20084208.mp4)  
+*This video demonstrates the gameplay and features of the Blink Game.*
+
+### Additional Demos
+[Link to any extra demo materials or links here]
+
+## Team Contributions
+- **Hafeefa:** Team lead and main developer, responsible for overall project design and implementation.
+
+Made with ❤️ at TinkerHub Useless Projects
+
 ## Implementation
 ### For Software:
 #### Installation
@@ -44,6 +93,3 @@ npm install
 
 # Start the development server
 npm run dev
-
-Project Documentation
-For Software:
